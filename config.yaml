@@ -18,7 +18,7 @@ monitors:
   - id: website # unique identifier
     name: 'Website & Registrar'
     description: '' # default=empty
-    url: 'https://www.wbxplus.org/' # URL to fetch
+    url: 'https://www.webxplus.org/' # URL to fetch
     method: GET # default=GET
     expectStatus: 200 # operational status, default=200
     followRedirect: false # should fetch follow redirects, default=false
