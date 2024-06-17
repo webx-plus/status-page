@@ -81,10 +81,12 @@ export async function processCronTrigger(event) {
     }
 
     // Updat ethe dns.webxplus.org host, if needed
+    console.log(monitor.url);
     if (
       monitorStatusChanged && monitor.url === "https://dns-one.webxplus.org/uptime" && 
       ((KV_STATUS_PAGE.get("dns-current-target", "text") !== "dns-one.webxplus.org" && monitorOperational) || !monitorOperational)
     ) {
+      console.log("Updating dns.webxplus.org");
       event.waitUntil(notifyDNS(monitor, monitorOperational))
     }
 
