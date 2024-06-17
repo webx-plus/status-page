@@ -6,7 +6,9 @@ import {
   getCheckLocation,
   getKVMonitors,
   setKVMonitors,
+  setKV,
   notifyDiscord,
+  notifyDNS,
 } from './helpers'
 
 function getDate() {
@@ -69,26 +71,6 @@ export async function processCronTrigger(event) {
       operational: monitorOperational,
     }
 
-    // Send Slack message on monitor change
-    if (
-      monitorStatusChanged &&
-      typeof SECRET_SLACK_WEBHOOK_URL !== 'undefined' &&
-      SECRET_SLACK_WEBHOOK_URL !== 'default-gh-action-secret'
-    ) {
-      event.waitUntil(notifySlack(monitor, monitorOperational))
-    }
-
-    // Send Telegram message on monitor change
-    if (
-      monitorStatusChanged &&
-      typeof SECRET_TELEGRAM_API_TOKEN !== 'undefined' &&
-      SECRET_TELEGRAM_API_TOKEN !== 'default-gh-action-secret' &&
-      typeof SECRET_TELEGRAM_CHAT_ID !== 'undefined' &&
-      SECRET_TELEGRAM_CHAT_ID !== 'default-gh-action-secret'
-    ) {
-      event.waitUntil(notifyTelegram(monitor, monitorOperational))
-    }
-
     // Send Discord message on monitor change
     if (
       monitorStatusChanged &&
@@ -96,6 +78,14 @@ export async function processCronTrigger(event) {
       SECRET_DISCORD_WEBHOOK_URL !== 'default-gh-action-secret'
     ) {
       event.waitUntil(notifyDiscord(monitor, monitorOperational))
+    }
+
+    // Updat ethe dns.webxplus.org host, if needed
+    if (
+      monitorStatusChanged && monitor.url === "https://dns-one.webxplus.org/uptime" && 
+      ((KV_STATUS_PAGE.get("dns-current-target", "text") !== "dns-one.webxplus.org" && monitorOperational) || !monitorOperational)
+    ) {
+      event.waitUntil(notifyDNS(monitor, monitorOperational))
     }
 
     // make sure checkDay exists in checks in cases when needed

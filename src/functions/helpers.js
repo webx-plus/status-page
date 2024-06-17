@@ -108,6 +108,30 @@ export async function notifyDiscord(monitor, operational) {
   })
 }
 
+//Update dns.webxplus.org
+export async function notifyDNS(monitor, operational) {
+  const url = `https://api.cloudflare.com/client/v4/zones/${SECRET_CF_ZONE_ID}/dns_records`;
+  const murl = new URL(monitor.url);
+  let new_target;
+  if (operational) new_target = murl.host === "dns-two.webxplus.org" ? SECRET_DNS_SECONDARY : SECRET_DNS_PRIMARY;
+  else new_target = murl.host === "dns-two.webxplus.org" ? SECRET_DNS_PRIMARY : SECRET_DNS_SECONDARY;
+  const request = await fetch(`${url}?name=dns`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${SECRET_CF_API_TOKEN}`,
+    },
+    body: JSON.stringify({
+      content: new_target,
+    }),
+  })
+  if (request.ok) {
+    console.log(`Updated dns.webxplus.org to ${new_target}`);
+    setKV("dns-current-target", murl.host);
+  } else {
+    console.error(`Failed to update dns.webxplus.org to ${new_target} (${request.status})`);
+  }
+}
+
 export function useKeyPress(targetKey) {
   const [keyPressed, setKeyPressed] = useState(false)
 
