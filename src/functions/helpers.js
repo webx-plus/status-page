@@ -113,8 +113,8 @@ export async function notifyDNS(monitor, operational) {
   const url = `https://api.cloudflare.com/client/v4/zones/${SECRET_CF_ZONE_ID}/dns_records`;
   const murl = new URL(monitor.url);
   let new_target;
-  if (operational) new_target = murl.host === "dns-two.webxplus.org" ? SECRET_DNS_SECONDARY : SECRET_DNS_PRIMARY;
-  else new_target = murl.host === "dns-two.webxplus.org" ? SECRET_DNS_PRIMARY : SECRET_DNS_SECONDARY;
+  if (operational) new_target = murl.host === "dns-two.webxplus.org" ? SECRET_DNS_ROUTE_SECONDARY : SECRET_DNS_ROUTE_PRIMARY;
+  else new_target = murl.host === "dns-two.webxplus.org" ? SECRET_DNS_ROUTE_PRIMARY : SECRET_DNS_ROUTE_SECONDARY;
   const request = await fetch(`${url}?name=dns`, {
     method: "PATCH",
     headers: {
