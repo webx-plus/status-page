@@ -110,12 +110,12 @@ export async function notifyDiscord(monitor, operational) {
 
 //Update dns.webxplus.org
 export async function notifyDNS(monitor, operational) {
-  const url = `https://api.cloudflare.com/client/v4/zones/${SECRET_CF_ZONE_ID}/dns_records`;
+  const url = `https://api.cloudflare.com/client/v4/zones/${SECRET_CF_ZONE_ID}/dns_records/dns`;
   const murl = new URL(monitor.url);
   let new_target;
   if (operational) new_target = murl.host === "dns-two.webxplus.org" ? SECRET_DNS_ROUTE_SECONDARY : SECRET_DNS_ROUTE_PRIMARY;
   else new_target = murl.host === "dns-two.webxplus.org" ? SECRET_DNS_ROUTE_PRIMARY : SECRET_DNS_ROUTE_SECONDARY;
-  const request = await fetch(`${url}?name=dns`, {
+  const request = await fetch(url, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${SECRET_CF_API_TOKEN}`,
