@@ -126,7 +126,7 @@ export async function notifyDNS(monitor, operational) {
   })
   if (request.ok) {
     console.log(`Updated dns.webxplus.org to ${new_target}`);
-    setKV("dns-current-target", murl.host);
+    setKV("dns-current-target", new_target == SECRET_DNS_ROUTE_SECONDARY ? "dns-two.webxplus.org" : "dns-one.webxplus.org");
   } else {
     console.error(`Failed to update dns.webxplus.org to ${new_target} (${request.status})`);
   }
