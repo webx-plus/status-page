@@ -1,4 +1,4 @@
-name = "wbxp-status"
+name = 'wbxp-status-production'
 workers_dev = true
 account_id = "55c6e8c8a11cc5348349fd88fd5b52ae"
 type = "webpack"
