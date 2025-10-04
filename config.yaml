@@ -39,3 +39,26 @@ monitors:
     method: GET
     expectStatus: 200
     linkable: false # allows the title to be a link, default=true
+
+  - id: spec
+    name: WebX Spec
+    description: 'The modern WebX Specification'
+    url: 'https://spec.webxplus.org/'
+    method: GET
+    expectStatus: 200
+    linkable: true # allows the title to be a link, default=true
+
+  - id: clerk-api
+    name: Clerk Frontend API
+    description: 'Clerk authentication stuff'
+    url: 'https://clerk.webxplus.org/'
+    method: GET
+    expectStatus: 200
+    linkable: false # allows the title to be a link, default=true
+  - id: clerk-accounts
+    name: Accounts Portal
+    description: 'Login & Authentication Portal, managed by Clerk'
+    url: 'https://accounts.webxplus.org/sign-in'
+    method: GET
+    expectStatus: 200
+    linkable: false # allows the title to be a link, default=true
